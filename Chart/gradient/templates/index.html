@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  </head>
+  <body>
+    <header class="p-3 text-bg-dark">
+        <div class="container">
+          <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+              <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
+            </a>
+    
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+              <li><a href="#" class="nav-link px-2 text-white">All Charts</a></li>
+              <li><a href="#" class="nav-link px-2 text-white">ADN Task</a></li>
+            </ul>
+    
+            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+              <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Search..." aria-label="Search">
+            </form>
+    
+            <div class="text-end">
+              <button type="button" class="btn btn-outline-light me-2">Login</button>
+              <button type="button" class="btn btn-warning">Sign-up</button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+
+      <div class="container">
+        <br>
+        <h3>Add six integer values</h3>
+
+        <div style="margin-top: 40px;" class="first">
+            <form method="post", action="">
+                {% csrf_token %}
+        <div class="input-group">
+            <span class="input-group-text">First to last sequentially</span>
+            <input type="text" name="text1"  class="form-control">
+            <input type="text" name="text2"  class="form-control">
+            <input type="text" name="text3"  class="form-control">
+            <input type="text" name="text4"  class="form-control">
+            <input type="text" name="text5"  class="form-control">
+            <input type="text" name="text6"  class="form-control">
+            <input class="btn btn-dark" type="submit">
+          </div>
+        </form>
+        </div>
+       <br>
+       <br>
+
+
+       <h3 style="text-align: center;">Line Chart</h3>
+       <div>
+        <canvas id="myChart" width="700px"></canvas>
+      </div>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <script>
+        const ctx = document.getElementById('myChart');
+      
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: ['label1', 'label2', 'label3', 'label4', 'label5', 'label6'],
+            datasets: [{
+              label: '# of Votes',
+              data: [{{A}},{{B}},{{C}},{{D}},{{E}},{{F}}],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      </script>
+
+
+<br>
+<br>
+  <h3 style="text-align: center;">Bar Chart</h3>
+  <div>
+    <canvas id="myChart2" width="700px"></canvas>
+  </div>
+  <script>
+    const ctx2 = document.getElementById('myChart2');
+  
+    new Chart(ctx2, {
+      type: 'bar',
+      data: {
+        labels: ['label1', 'label2', 'label3', 'label4', 'label5', 'label6'],
+        datasets: [{
+          label: '# of Votes',
+          data: [{{A}},{{B}}, {{C}}, {{D}}, {{E}}, {{F}}],
+          backgroundColor: 'rgba(77, 236, 91, 0.8)', // Set the desired bar color
+          borderColor: 'rgba(77, 236, 91, 0.8)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  </script>
+
+
+<br>
+<br>
+<h3 style="text-align: center;">Bubble Chart</h3>
+<div>
+  <canvas id="myChart3" width="700px"></canvas>
+</div>
+<script>
+  const ctx3 = document.getElementById('myChart3');
+
+  new Chart(ctx3, {
+    type: 'bubble',
+    data: {
+      labels: ['label1', 'label2', 'label3', 'label4', 'label5', 'label6'],
+      datasets: [{
+        label: '# of Votes',
+        data: [
+          { x: 1, y: {{A}}, r: 10 },
+          { x: 2, y: {{B}}, r: 20 },
+          { x: 3, y: {{C}}, r: 15 },
+          { x: 4, y: {{D}}, r: 25 },
+          { x: 5, y: {{E}}, r: 18 },
+          { x: 6, y: {{F}}, r: 12 }
+        ],
+        backgroundColor: 'rgba(245, 40, 145, 0.8)', // Set the desired bubble color
+        borderColor: 'rgba(255, 99, 132, 1)', // Set the border color
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+  
+</script>
+
+<br>
+<br>
+<h3 style="text-align: center;">Doughnut and Pie Chart</h3>
+<div>
+  <canvas id="myChart4" width="700px"></canvas>
+</div>
+<script>
+  const ctx4 = document.getElementById('myChart4');
+
+  new Chart(ctx4, {
+    type: 'doughnut',
+    data: {
+      labels: ['label1', 'label2', 'label3', 'label4', 'label5', 'label6'],
+      datasets: [{
+        label: '# of Votes',
+        data: [{{A}},{{B}}, {{C}}, {{D}}, {{E}}, {{F}}],
+        backgroundColor: [
+          'rgba(77, 236, 91, 0.8)',
+          'rgba(91, 187, 236, 0.8)',
+          'rgba(236, 91, 91, 0.8)',
+          'rgba(236, 203, 91, 0.8)',
+          'rgba(160, 91, 236, 0.8)',
+          'rgba(236, 91, 196, 0.8)'
+        ], // Set the desired slice colors // Set the desired bubble color
+        borderColor: 'rgba(255, 99, 132, 1)', // Set the border color
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
+
+
+<br>
+<br>
+<h3 style="text-align: center;">Polar Area Chart</h3>
+<div>
+  <canvas id="myChart5" width="700px"></canvas>
+</div>
+<script>
+  const ctx5 = document.getElementById('myChart5');
+
+  new Chart(ctx5, {
+    type: 'polarArea',
+    data: {
+      labels: ['label1', 'label2', 'label3', 'label4', 'label5', 'label6'],
+      datasets: [{
+        label: '# of Votes',
+        data: [{{A}},{{B}}, {{C}}, {{D}}, {{E}}, {{F}}],
+        backgroundColor: [
+          'rgba(77, 236, 91, 0.8)',
+          'rgba(91, 187, 236, 0.8)',
+          'rgba(236, 91, 91, 0.8)',
+          'rgba(236, 203, 91, 0.8)',
+          'rgba(160, 91, 236, 0.8)',
+          'rgba(236, 91, 196, 0.8)'
+        ], // Set the desired slice colors // Set the desired bubble color
+        borderColor: 'rgba(255, 99, 132, 1)', // Set the border color
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
+
+<br>
+<br>
+<h3 style="text-align: center;">Scatter Chart</h3>
+<div>
+  <canvas id="myChart6" width="700px"></canvas>
+</div>
+<script>
+  const ctx6 = document.getElementById('myChart6');
+
+  new Chart(ctx6, {
+    type: 'scatter',
+    data: {
+      labels: ['label1', 'label2', 'label3', 'label4', 'label5', 'label6'],
+      datasets: [{
+        label: '# of Votes',
+        data: [
+          { x: 1, y: {{A}}, r: 10 },
+          { x: 2, y: {{B}}, r: 20 },
+          { x: 3, y: {{C}}, r: 15 },
+          { x: 4, y: {{D}}, r: 25 },
+          { x: 5, y: {{E}}, r: 18 },
+          { x: 6, y: {{F}}, r: 12 }
+        ],
+        backgroundColor: 'rgba(67, 86, 239, 0.8)',
+        borderColor: 'rgba(67, 86, 239, 0.8)', // Set the border color
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
+
+<br>
+<br>
+  <h3 style="text-align: center;">Radar Chart</h3>
+  <div>
+    <canvas id="myChart7" width="700px"></canvas>
+  </div>
+  <script>
+    const ctx7 = document.getElementById('myChart7');
+  
+    new Chart(ctx7, {
+      type: 'radar',
+      data: {
+        labels: ['label1', 'label2', 'label3', 'label4', 'label5', 'label6'],
+        datasets: [{
+          label: '# of Votes',
+          data: [{{A}},{{B}}, {{C}}, {{D}}, {{E}}, {{F}}],
+          backgroundColor: 'rgba(149, 227, 52, 1)', // Set the desired bar color
+          borderColor: 'rgba(149, 227, 52, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  </script>
+
+      </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
+</body>
+</html>
