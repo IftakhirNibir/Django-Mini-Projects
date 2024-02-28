@@ -15,18 +15,8 @@
             </a>
     
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-              <li><a href="#" class="nav-link px-2 text-white">All Charts</a></li>
-              <li><a href="#" class="nav-link px-2 text-white">ADN Task</a></li>
+              <li><a href="#" class="nav-link px-2 text-white"><h3>All Charts</h3></a></li>
             </ul>
-    
-            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-              <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Search..." aria-label="Search">
-            </form>
-    
-            <div class="text-end">
-              <button type="button" class="btn btn-outline-light me-2">Login</button>
-              <button type="button" class="btn btn-warning">Sign-up</button>
-            </div>
           </div>
         </div>
       </header>
@@ -41,12 +31,12 @@
                 {% csrf_token %}
         <div class="input-group">
             <span class="input-group-text">First to last sequentially</span>
-            <input type="text" name="text1"  class="form-control">
-            <input type="text" name="text2"  class="form-control">
-            <input type="text" name="text3"  class="form-control">
-            <input type="text" name="text4"  class="form-control">
-            <input type="text" name="text5"  class="form-control">
-            <input type="text" name="text6"  class="form-control">
+            <input type="text" name="text1" value="{{A}}"  class="form-control">
+            <input type="text" name="text2" value="{{B}}"  class="form-control">
+            <input type="text" name="text3" value="{{C}}"  class="form-control">
+            <input type="text" name="text4" value="{{D}}"  class="form-control">
+            <input type="text" name="text5" value="{{E}}"  class="form-control">
+            <input type="text" name="text6" value="{{F}}"  class="form-control">
             <input class="btn btn-dark" type="submit">
           </div>
         </form>
@@ -54,7 +44,7 @@
        <br>
        <br>
 
-
+{% if A and B and C and D and E and F %}
        <h3 style="text-align: center;">Line Chart</h3>
        <div>
         <canvas id="myChart" width="700px"></canvas>
@@ -147,6 +137,7 @@
         borderColor: 'rgba(255, 99, 132, 1)', // Set the border color
         borderWidth: 1
       }]
+    
     },
     options: {
       responsive: true,
@@ -314,6 +305,8 @@
       }
     });
   </script>
+
+  {% endif %}
 
       </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
