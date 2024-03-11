@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <!-- Add your CSS styles and any necessary scripts here -->
+</head>
+<body>
+    <div class="container">
+    <h1>My Chatbot</h1>
+    <img src="https://us.123rf.com/450wm/rufous/rufous2304/rufous230418560/203439980-system-artificial-intelligence-chatgpt-chat-bot-ai-technology-smart-robot-ai-chat-gpt-application.jpg" alt="">
+    <div class="chat-container">
+        <div class="chat-box">
+            {% if "Sorry for misunderstanding. Please write your question again." not in s %}
+            {% if "I don't know the answer. Can you teach me?" not in s %}
+            {% if s %}
+            {% if u %}
+                <div class="message" style="margin-top: 5px;">
+                    <p style="background-color: lightblue; font-size: large; color: white;"><b>You: {{ u }}</b></p>
+                    <p><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9An3ThelB-Dp1vvSftvF2w_a-wleaiPQG2PR_IJqRtZEuNGi1M2FQwwA40yEEmalNm9w&usqp=CAU" alt="" width="50px"> {{ s }}</p>
+                </div>
+            {% endif %}
+            {% endif %}
+            {% endif %}
+            {% endif %}
+        </div>
+        {% if "Sorry for misunderstanding. Please write your question again." not in s %}
+        {% if "I don't know the answer. Can you teach me?" not in s %}
+        <form method="post">
+            {% csrf_token %}
+            <div class="input-group mb-3" style="margin-top: 10px;">
+                <input type="text" name="text" class="form-control" placeholder="Type your message...">
+                <button class="btn btn-outline-secondary" type="submit">Send</button>
+              </div>
+        </form>
+        {% endif %}
+        {% endif %}
+
+        {% if "I don't know the answer. Can you teach me?" in s %}
+            <div class="teach-bot-section">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="input-group" style="margin-top: 10px;">
+                        <input type="hidden" name="teach_bot" value="True">
+                        <span class="input-group-text">I don't know the answer. Can you teach me?</span>
+                        <input type="text" name="correct_question" aria-label="First name" class="form-control" placeholder="Type the Question..." value="{{u}}">
+                        <input type="text" name="correct_answer" aria-label="Last name" class="form-control" placeholder="Type the correct answer">
+                        <button type="submit" class="btn btn-outline-secondary">Teach</button>
+                      </div>
+                </form>
+            </div>
+        {% endif %}
+
+        {% if "Sorry for misunderstanding. Please write your question again." in s %}
+        <div class="teach-bot-section">
+            <form method="post">
+                {% csrf_token %}
+                <div class="input-group" style="margin-top: 10px;">
+                    <input type="hidden" name="teach_bot2" value="True">
+                    <span class="input-group-text">I don't know the answer. Can you teach me?</span>
+                    <input type="text" name="correct_question" aria-label="First name" class="form-control" placeholder="Type the question">
+                    <input type="text" name="correct_answer" aria-label="Last name" class="form-control" placeholder="Type the correct answer">
+                    <button type="submit" class="btn btn-outline-secondary">Teach</button>
+                  </div>
+            </form>
+        </div>
+    {% endif %}
+    </div>
+</div>
+    <!-- Add your additional HTML and styling here -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+</body>
+</html>
+
+
+
