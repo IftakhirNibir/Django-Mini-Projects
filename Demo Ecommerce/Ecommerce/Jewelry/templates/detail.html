@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %} {{item.name}} details {% endblock %}
+
+{% block content %} 
+<div class="container mt-5">
+    <div class="row">
+        <!-- Left Column (Image) -->
+        <div class="col-md-6">
+            <img src="{{ item.thumnail_image.url }}" alt="Image" class="img-fluid">
+        </div>
+
+        <!-- Right Column (Image Details) -->
+        <div class="col-md-6">
+            <h2>{{ item.name }}</h2>
+            <p><strong>Price: </strong>{{ item.price }}</p>
+            {% if item.description %}
+            <p><strong>Product Details: </strong>{{ item.description }}</p>
+            <p><strong>Weight: </strong>{{ item.weight }} grams <strong>Product Type: </strong>{{item.category}}</p>
+            <p><strong>Color: </strong>{{ item.color }} <strong>Metal Purity: </strong>{{item.purity}}</p>
+            <!-- Add more image details here -->
+            {% endif %}
+
+            <div class="mt-4">
+                {% if request.user.is_staff %}
+                <a  href="{% url 'Jewelry:edit' item.id %}" class="btn btn-outline-secondary">Edit</a>
+                <a  href="{% url 'Jewelry:delete' item.id %}" class="btn btn-outline-secondary">Delete</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Related items section -->
+    <p class="mt-5 text-center" style="font-size: large;">You May Also Like</p>
+    <hr>
+    <div class="row">
+        {% for item in related_items %}
+        <div class="col-md-3">
+            <a style="text-decoration: none;" href="{% url 'Jewelry:detail' item.id %}">
+                <div class="card" style="margin-bottom: 15px;">
+                    <img src="{{item.thumnail_image.url}}" class="card-img-top" alt="Image 1" width="200px"
+                        height="200px">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item.name }}</h5>
+                        <p class="card-text">$ {{ item.price }}</p>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-outline-secondary" type="button">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

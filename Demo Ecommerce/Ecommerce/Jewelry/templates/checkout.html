@@ -1,0 +1,196 @@
+{% extends 'base.html' %}
+{% block title %} {{ title }} {% endblock %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="box-element" id="form-wrapper">
+                <form id="form">
+                    {% if not request.user.is_authenticated %}
+                    <div id="user-info">
+                        <div class="form-group">
+                            <input required class="form-control" type="text" name="name" placeholder="Name..">
+                        </div>
+                        <div class="form-group">
+                            <input required class="form-control" type="email" name="email" placeholder="Email..">
+                        </div>
+                    </div>
+                    {% endif %}
+    
+                    <div id="shipping-info">
+                        <hr>
+                        <p>Shipping Information:</p>
+                        <hr>
+                        <div class="form-group">
+                            <input class="form-control" type="text" name="address" placeholder="Address.." value="{{ shipping_address.address }}" required>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" type="text" name="city" placeholder="City.." value="{{ shipping_address.city }}" required>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" type="text" name="state" placeholder="State.." value="{{ shipping_address.state }}" required>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" type="number" name="zipcode" placeholder="Zip code.." value="{{ shipping_address.zipcode }}" required>
+                        </div>
+                    </div>
+    
+                    <hr>
+                    <button id="form-button" class="btn btn-outline-secondary" {% if request.user.is_authenticated %}style="display: none;"{% endif %} type="submit">Continue</button>
+                    {% if items %}
+                    <button id="make-payment" class="btn btn-outline-secondary" {% if not request.user.is_authenticated %}style="display: none;"{% endif %} type="button">Make payment</button>
+                    {% endif %}
+                </form>
+            </div>
+    
+            <br>
+            <div class="box-element" id="payment-info" style="display: none;">
+                <!-- <small>Paypal Options</small> -->
+                <!-- <div id="paypal-button-container"></div> -->
+            </div>
+        </div>
+    
+        <div class="col-lg-6">
+            <div class="box-element">
+                <a class="btn btn-outline-secondary" href="{% url 'Jewelry:cart' %}">&#x2190; Back to Cart</a>
+                <hr>
+                <h3>Order Summary</h3>
+                <hr>
+                {% for item in items %}
+                <div class="cart-row row">
+                    <div class="col-2"><img class="row-image img-fluid" src="{{item.product.thumnail_image.url}}" alt="{{item.product.name}}" width="50px"></div>
+                    <div class="col-4"><p>{{item.product.name}}</p></div>
+                    <div class="col-2"><p>${{item.product.price|floatformat:2}}</p></div>
+                    <div class="col-2"><p>x{{item.quantity}}</p></div>
+                </div>
+                <br>
+                {% endfor %}
+                <h5 class="col-12">Items: {{order.get_cart_items}}</h5>
+                <h5 class="col-12">Total: ${{order.get_cart_total|floatformat:2}}</h5>
+            </div>
+        </div>
+        
+    </div>    
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+    var form = document.getElementById('form');
+    console.log('Form element:', form);
+
+    // Rest of your JavaScript code...
+    var shipping = '{{order.shipping}}';
+    var total = '{{order.get_cart_total}}';
+    var user = '{{request.user}}';
+
+    if (shipping == 'False') {
+        document.getElementById('shipping-info').innerHTML = '';
+    }
+
+    var userInfo = document.getElementById('user-info');
+    if (userInfo && user !== 'anonymoususer') {
+        userInfo.innerHTML = '';
+    }
+
+    if (shipping == 'False' && user != 'AnonymousUser') {
+        document.getElementById('form-wrapper').classList.add("hidden");
+        document.getElementById('payment-info').classList.remove("hidden");
+    }
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        console.log('Form Submitted...')
+
+        if (validateForm()) {
+            document.getElementById('form-button').classList.add("hidden");
+            document.getElementById('payment-info').classList.remove("hidden");
+        } else {
+            alert("Please fill out all required fields correctly.");
+        }
+    });
+
+    document.getElementById('make-payment').addEventListener('click', function (e) {
+        if (validateForm()) {
+            submitFormData();
+        } else {
+            alert("Please fill out all required fields correctly.");
+        }
+    });
+
+    function validateForm() {
+        var isValid = true;
+        var requiredInputs = form.querySelectorAll('input[required]');
+        requiredInputs.forEach(function (input) {
+            if (!input.value.trim()) {
+                isValid = false;
+                return;
+            }
+        });
+
+        var stateInput = form.querySelector('input[name="state"]');
+        if (stateInput && (stateInput.value.length > 2 || stateInput.value.length < 2)) {
+            alert("Please enter a valid 2-digit state code.");
+            isValid = false;
+        }
+
+        var zipcodeInput = form.querySelector('input[name="zipcode"]');
+        if (zipcodeInput && (zipcodeInput.value.length > 5 || zipcodeInput.value.length < 5)){
+            alert("Please enter a valid 5-digit zipcode.");
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    function submitFormData() {
+        console.log('Payment button clicked')
+        var userFormData = {
+            'name': null,
+            'email': null,
+            'total': total,
+        }
+
+        var shippingInfo = {
+            'address': null,
+            'city': null,
+            'state': null,
+            'zipcode': null,
+        }
+
+        if (shipping != 'False') {
+            shippingInfo.address = form.address.value
+            shippingInfo.city = form.city.value
+            shippingInfo.state = form.state.value
+            shippingInfo.zipcode = form.zipcode.value
+        }
+
+        if (user == 'AnonymousUser') {
+            userFormData.name = form.name.value
+            userFormData.email = form.email.value
+        }
+
+        var url = "process_order/"
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken,
+            },
+            body: JSON.stringify({ 'form': userFormData, 'shipping': shippingInfo })
+
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log('Success:', data);
+                alert('Transaction completed');
+
+                window.location.href = "{% url 'Core:index' %}"
+
+            })
+    }
+});
+</script>
+
+
+{% endblock %}
