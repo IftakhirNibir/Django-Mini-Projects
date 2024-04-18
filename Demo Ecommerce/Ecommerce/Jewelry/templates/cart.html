@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block title %} {{ title }} {% endblock %}
+{% block content %}
+<div class="container">
+<div class="row">
+  <div class="col-lg-12">
+    <div class="box-element">
+
+      <a class="btn btn-outline-secondary" href="{% url 'Jewelry:items' %}">&#x2190; Continue Shopping</a>
+
+      <br>
+      <br>
+      <table class="table">
+        <tr>
+          <th><h5>Items: <strong>{{ order.get_cart_items }}</strong></h5></th>
+          <th><h5>Total: <strong>${{ order.get_cart_total|floatformat:2 }}</strong></h5></th>
+          <th>
+            <a style="float:right; margin:5px;" class="btn btn-outline-secondary" href="{% url 'Jewelry:checkout_page'  %}">Checkout</a>
+          </th>
+        </tr>
+      </table>
+
+    </div>
+
+    <br>
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col" class="col-2">Image</th>
+              <th scope="col" class="col-2">Item</th>
+              <th scope="col" class="col-2">Price</th>
+              <th scope="col" class="col-2">Quantity</th>
+              <th scope="col" class="col-2">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in items %}
+            <tr>
+              <td class="col-2">
+                <img src="{{item.product.thumnail_image.url}}" alt="" width="50px">
+              </td>
+              <td class="col-2">{{ item.product.name }}</td>
+              <td class="col-2">${{ item.product.price|floatformat:2 }}</td>
+              <td class="col-2">
+                <p class="quantity d-flex justify-content-center">
+                  <ion-icon class="update-cart" style="font-size: 25px;" data-product="{{ item.product.id }}" data-action="add" name="caret-up-outline"></ion-icon>
+                  <span class="mr-2">{{ item.quantity }}</span>
+                  <ion-icon class="update-cart" style="font-size: 25px;" data-product="{{ item.product.id }}" data-action="remove" name="caret-down-outline"></ion-icon>
+                </p>
+              </td>
+              <td class="col-2">${{ item.get_total|floatformat:2 }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+       <!-- Button to clear all items -->
+       <button class="btn btn-outline-secondary" id="clear-cart-btn">Clear Cart</button>
+
+  </div>
+</div>
+</div>
+
+<script>
+  document.getElementById('clear-cart-btn').addEventListener('click', function() {
+    if (user == 'AnonymousUser') {
+      console.log("Not logged in")
+    } else {
+      // Call a function to handle clearing the cart
+      clearUserCart();
+    }
+  });
+
+  // Function to clear the user's cart
+  function clearUserCart() {
+    console.log('Clearing user cart...')
+    var url = 'clear_cart/'
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrftoken,
+        },
+        body: JSON.stringify({})
+      })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log('data', data)
+        location.reload(); // Reload the page after clearing the cart
+      });
+  }
+</script>
+
+
+{% endblock %}
+

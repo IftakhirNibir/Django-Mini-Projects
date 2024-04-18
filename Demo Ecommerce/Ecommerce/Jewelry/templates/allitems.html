@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block title %} All Items {% endblock %}
+{% block content %}
+<div class="container">
+<div class="row">
+    <div class="col-md-3 my-5 fixed-sidebar">
+        <form method="get" action="">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" name="query" placeholder="Search an item">
+                <button class="btn btn-outline-secondary" type="submit" id="search-button"><sub>Search</button>
+            </div>
+        </form>
+        <hr class="my-4">
+
+        <select style="margin-bottom: 10px;" class="form-select" aria-label="Default select example" onchange="redirectCategory(this)">
+            <option selected>Main Categories</option>
+            {% for category in main_categories %}
+                <option value="{% url 'Jewelry:items' %}?query={{ query }}&main_category={{ category.id }}">
+                    {{ category.name }} <sub style="color: red;">{{ category.mitems.count }}</sub>
+                </option>
+            {% endfor %}
+        </select>
+
+        <select class="form-select" aria-label="Default select example" onchange="redirectCategory(this)">
+            <option selected>Child Categories</option>
+            {% for category in categories %}
+                <option value="{% url 'Jewelry:items' %}?query={{ query }}&category={{ category.id }}">
+                    {{ category.name }} <sub style="color: red;">{{ category.mitems.count }}</sub>
+                </option>
+            {% endfor %}
+        </select>
+        
+    </div>
+
+    <div class="col-md-9 content">
+        <h2 class="my-3" style="color: palevioletred;">
+            <sub><ion-icon name="pricetags-outline" style="font-size: 30px;"></ion-icon></sub> All Items
+        </h2>
+        <div class="productContainer row">
+            {% for item in items %}
+            <div class="col-md-3">
+                <div class="card" style="margin-bottom: 15px;">
+                    <a style="text-decoration: none;" href="{% url 'Jewelry:detail' item.id %}">
+                        <img src="{{item.thumnail_image.url}}" class="card-img-top" alt="Image 1" width="200px" height="200px">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">{{item.name}}</h5>
+                        <p class="card-text">$ {{item.price}} 
+                            {% if item.is_sold %}
+                            <span style="color: red; margin-left: 10px;">Sold</span>
+                            {% endif %}
+                        </p>
+                        <div class="row">
+                            <div class="col">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <sub>
+                                            <a href="{% url 'Dashboard:save_item' item.id %}" style="color: black;">
+                                                {% if item.id in Saved_Item %}
+                                                    <ion-icon style="font-size: 20px;color: palevioletred; " name="heart"></ion-icon>
+                                                {% else %}
+                                                    <ion-icon style="font-size: 19px;" name="heart-outline"></ion-icon>
+                                                {% endif %}
+                                            </a>
+                                        </sub>
+                                    </div>
+                                    <div>
+                                        <sub>
+                                            <ion-icon style="font-size: 19px;" data-product="{{item.id}}" data-action="add" class="update-cart" name="cart-outline"></ion-icon>
+                                        </sub>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    
+</div>
+</div>
+
+<script>
+    function redirectCategory(select) {
+        var url = select.value;
+        window.location.href = url;
+    }
+</script>
+{% endblock %}
+
