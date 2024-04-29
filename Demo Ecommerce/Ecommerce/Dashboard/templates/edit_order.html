@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% block title %}Edit Order | Ordered Info{% endblock %}
+{% block content %}
+<!-- <div class="container">
+    <h2 style="color: palevioletred;" class="my-4">Order Summary</h2>
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="customer">Customer Name:</label>
+                            <input type="text" id="customer" class="form-control" value="{{ order.customer.username }}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="customer">Customer Email:</label>
+                            <input type="text" id="customer" class="form-control" value="{{ order.customer.email }}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="order_item">Ordered Items:</label>
+                            {% for item in order_item %}
+                            <div class="d-flex align-items-center">
+                                <img src="{{ item.product.thumnail_image.url }}" alt="{{ item.product.name }}" width="60px">
+                                <input type="text" id="order_item" class="form-control ml-2" value="{{ item.product.name }} x{{ item.quantity }}" readonly>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="form-group">
+                            <label for="total_price">Total Price:</label>
+                            <input type="text" id="total_price" class="form-control" value="${{ order.get_cart_total|floatformat:2 }}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="status">Delivery Status:</label>
+                            <select id="status" class="form-control" name="status">
+                                <option value="canceled" {% if order.status == 'canceled' %}selected{% endif %}>Canceled</option>
+                                <option value="pending" {% if order.status == 'pending' %}selected{% endif %}>Pending</option>
+                                <option value="delivery" {% if order.status == 'delivery' %}selected{% endif %}>Delivery</option>
+                            </select>
+                        </div>
+                        <br>
+                        <button type="submit" class="btn btn-outline-secondary">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-body">
+                    <div class="receipt-main">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="receipt-left">
+                                    <img class="img-responsive" alt="iamgurdeeposahan" src="https://bootdey.com/img/Content/avatar/avatar6.png" style="width: 71px; border-radius: 43px;">
+                                </div>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <div class="receipt-right">
+                                    <h5>Company Name.</h5>
+                                    <p>+1 3649-6589 <i class="fa fa-phone"></i></p>
+                                    <p>company@gmail.com <i class="fa fa-envelope-o"></i></p>
+                                    <p>USA <i class="fa fa-location-arrow"></i></p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="receipt-right">
+                                    <h5>{{ order.customer.username }} </h5>
+                                    <p><b>Mobile :</b> +1 12345-4569</p>
+                                    <p><b>Email :</b> {{ order.customer.email }}</p>
+                                    <p><b>Address :</b> New York, USA</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="receipt-left">
+                                    <h3>INVOICE # 102</h3>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                           
+                                    <tr>
+                                        <th>Image</th>
+                                        <th>Product Description</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in order_item %}
+                                    <tr>
+                                        <td> <img src="{{ item.product.thumnail_image.url }}" alt="{{ item.product.name }}" width="60px"></td>
+                                        <td>{{ item.product.name }} x{{ item.quantity }}</td>
+                                        <td><i class="fa fa-inr"></i> {{item.product.price}}/-</td>
+                                    </tr>
+                                    {% endfor %}
+                                    <tr>
+                                        <td><strong>Total Amount:</strong></td>
+                                        <td><strong><i class="fa fa-inr"></i> {{ order.get_cart_total|floatformat:2 }}/-</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Late Fees:</strong></td>
+                                        <td><strong><i class="fa fa-inr"></i> 0/-</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Payable Amount:</strong></td>
+                                        <td><strong><i class="fa fa-inr"></i> 0/-</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Balance Due:</strong></td>
+                                        <td><strong><i class="fa fa-inr"></i> 0/-</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-right"><h2><strong>Total:</strong></h2></td>
+                                        <td class="text-left text-danger"><h2><strong><i class="fa fa-inr"></i> {{ order.get_cart_total|floatformat:2 }}/-</strong></h2></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="receipt-right">
+                                    <p><b>Date:</b> {{ order.date_ordered }}</p>
+                                    <h5 style="color: rgb(140, 140, 140);">Thanks for shopping.!</h5>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="receipt-left">
+                                    <h1>Stamp</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

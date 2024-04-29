@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %} Admin Dashboard {% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <div style="display: flex;">
+        <hr style="flex-grow: 1;">
+        <h2 style="text-align: center; margin: 0 10px; margin-bottom: 8px; color: palevioletred;" >Categories</h2>
+        <hr style="flex-grow: 1;">
+        </div>
+        <div style="margin-bottom: 8px;" class="categories">
+            <!-- Start of the Bootstrap row -->
+            <div class="row">
+              {% for category in categories %}
+              <!-- Card -->
+              <div class="col-md-4">
+                  <div class="card">
+                      <div class="card-body">
+                          <h5 class="card-title">{{category.name}}</h5>
+                          <p class="card-text">{{category.items.count}} items</p>
+                      </div>
+                  </div>
+              </div>
+              {% endfor %}
+          </div> <!-- End of the category row -->
+          </div>
+
+          <div style="display: flex;">
+            <hr style="flex-grow: 1;">
+            <h2 style="text-align: center; margin: 0 10px; margin-bottom: 8px; color: palevioletred;" >Selling Info</h2>
+            <hr style="flex-grow: 1;">
+            </div>
+          <div class="row">
+            <!-- Sold Items Card -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Sold Jewelries</h5>
+                        <p class="card-text" style="color: rgb(80, 214, 80);">{{ sold_items_count }} Jewelry</p>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Unsold Items Card -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Unsold Jewelries</h5>
+                        <p class="card-text" style="color: rgb(248, 75, 75);">{{ unsold_items_count }} Jewelry</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+            
+    <div style="display: flex;">
+    <hr style="flex-grow: 1;">
+    <h2 style="text-align: center; margin: 0 10px; margin-bottom: 8px; color: palevioletred;" > Jewelries Information</h2>
+    <hr style="flex-grow: 1;">
+    </div>
+
+   <a href="{% url 'Jewelry:new' %}"><button type="button" class="btn btn-outline-secondary">Add Jewelries</button></a>
+    <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Image</th>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Product Type</th>
+            <th scope="col">Is Sold?</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+            <td><a href="{% url 'Jewelry:detail' item.id %}"><img src="{{ item.thumnail_image.url }}" alt="" width="100px"></a></td>
+            <td>{{item.name}}</td>
+            <td>{{item.price}}</td>
+            <td>{{item.category}}</td>
+            <td>{% if item.is_sold == False %}No{% else %}Yes{% endif %}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+</div>
+{% endblock %}
