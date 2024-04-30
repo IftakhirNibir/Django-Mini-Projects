@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %} Ordered Info {% endblock %}
+{% block content %}
+<div class="container">
+    <h2 style="color: palevioletred;" class="my-4">All Order Details</h2>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Customer</th>
+                        <th>Ordered Quantity</th>
+                        <th>Total Amount</th>
+                        <th>Ordered Date</th>
+                        <th>Transaction ID</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        <td>{{ order.customer.username }}</td>
+                        <td>
+                            {% for item in order_items %}
+                                {% if item.order == order %}
+                                    {{ item.quantity }}<br>
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>
+                            {{ order.get_cart_total|floatformat:2 }}<br>
+                        </td>
+                        <td>{{ order.date_ordered|timesince }} ago</td>
+                        
+                        <td>{{ order.transaction_id }}</td>
+                        <td>{{ order.status }}</td>
+                        <td>
+                            <a href="{% url 'Dashboard:edit_order' order.id %}" class="btn btn-outline-secondary">Edit</a>
+                        </td>
+                        <td>
+                        </td>
+                        
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

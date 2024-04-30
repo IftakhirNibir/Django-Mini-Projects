@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% block title %} Dashboard {% endblock %}
+{% block content %}
+{% if request.user.is_authenticated %}
+<div class="container">
+<div class="icon" style="text-align: center;">
+<ion-icon name="person-circle" style="font-size: 90px;"></ion-icon>
+<p><b>Full Name: </b>{{request.user.first_name}} {{request.user.last_name}}</p>
+<p><b>Username: </b>{{request.user.username}}</p>
+<p><b>Email address: </b>{{request.user.email}}</p>
+</div>
+{% endif %}
+<div style="display: flex;">
+    <hr style="flex-grow: 1;">
+    <h2 style="text-align: center; margin: 0 10px; margin-bottom: 8px;color: palevioletred;" >My favourite jewelries</h2>
+    <hr style="flex-grow: 1;">
+</div> 
+  <!-- Start of the items row -->
+    <div class="row">
+        {% for saveditem in saveditems %}
+        <div class="col-md-3">
+            <a style="color: black; text-decoration: none;" href="{% url 'Jewelry:detail' saveditem.item.id %}">
+            <div class="card" style="margin-bottom: 15px;">
+                <img src="{{saveditem.item.thumnail_image.url}}" class="card-img-top" alt="Image 1" width="200px" height="200px">
+                <div class="card-body">
+                    <h5 class="card-title">{{saveditem.item.name}}</h5>
+                    <p class="card-text">$ {{saveditem.item.price}} 
+                        {% if saveditem.item.is_sold %}
+                        <span style="color: red; margin-left: 10px;">Sold</span>
+                        {% endif %}
+                    </p>
+                    <a style="color: black;" href="{% url 'Dashboard:save_item' saveditem.item.id %}">
+                      <div class="row">
+                        <div class="col">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                          <sub>
+                              <ion-icon style="font-size: 20px;color: palevioletred; " name="heart"></ion-icon>
+                          </sub>
+                                </div>
+                        </a>
+                          <div>
+                            <sub>
+                                <ion-icon style="font-size: 19px;" data-product="{{saveditem.item.id}}" data-action="add" class="update-cart" name="cart-outline"></ion-icon>
+                            </sub>
+                          </div>
+                </div>
+            </div>
+            </a>
+                      </div>
+                    
+            </div>
+            </div>
+        </div>
+        {% endfor %}
+       
+    </div>
+
+    
+    <div style="display: flex;">
+        <hr style="flex-grow: 1;">
+        <h2 style="text-align: center; margin: 0 10px; margin-bottom: 8px;color: palevioletred;" >My Ordered List</h2>
+        <hr style="flex-grow: 1;">
+    </div> 
+    <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col" class="col-2">Image</th>
+              <th scope="col" class="col-2">Item</th>
+              <th scope="col" class="col-2">Quantity</th>
+              <th scope="col" class="col-2">Ordered Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for order in user_order_items|dictsortreversed:"order.date_ordered" %}
+            <tr>
+              <td class="col-2">
+                <img src="{{order.product.thumnail_image.url}}" alt="" width="50px">
+              </td>
+              <td class="col-2">{{ order.product.name }}</td>
+              <td class="col-2">
+                <p class="quantity d-flex justify-content-center">
+                  <span class="mr-2">{{ order.quantity }}</span>
+                </p>
+              </td>
+              <td class="col-2">{{ order.order.date_ordered }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+</div>
+{% endblock %}
