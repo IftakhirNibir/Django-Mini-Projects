@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %} Blog Details {% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Blog Lists</h2>
+    <div class="row">
+        {% for blog in blogs %}
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <img src="{{ blog.image.url }}" class="card-img-top" alt="{{ blog.title }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ blog.title }}</h5>
+                    <p class="card-text">{{ blog.description }}</p>
+                    <p class="card-text"><small class="text-muted">Author: {{ blog.author_name }}</small></p>
+                    <p class="card-text"><small class="text-muted">Posted Date: {{ blog.created_date }}, {{ blog.created_time }}</small></p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
