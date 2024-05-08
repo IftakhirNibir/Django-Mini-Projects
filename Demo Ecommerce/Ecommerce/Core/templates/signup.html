@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}SignUp{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center">
+  <div class="col-md-5 my-3">
+<h2 style="text-align: center; color: palevioletred;">Create Account</h2>
+<form method="post" action=".">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="username" class="form-label">Username</label><br>
+        {{form.username}}
+      </div>
+      <div class="mb-3">
+        <label for="firstname" class="form-label">First Name</label><br>
+        {{form.first_name}}
+      </div>
+      <div class="mb-3">
+        <label for="lastname" class="form-label">Last Name</label><br>
+        {{form.last_name}}
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label><br>
+        {{form.email}}
+      </div>
+      <div class="mb-3">
+        <label for="password1" class="form-label">Password</label><br>
+        {{form.password1}}
+      </div>
+      <div class="mb-3">
+        <label for="password2" class="form-label">Repeat Password</label><br>
+        {{form.password2}}
+      </div>
+
+      {% if form.errors or form.non_field_errors %}
+      <div class="mb-3 p-6 bg-red-100 rounded-xl">
+          {% for field in form %}
+          
+            <h4 style="color: rgb(240, 37, 37);">{{ field.errors }}</h4>
+  
+          {% endfor %}
+
+          {{ form.non_field_errors }}
+      </div>
+  {% endif %}
+  <div class="d-grid gap-2">
+    <button class="btn btn-outline-secondary" type="submit">Submit </button> 
+  </div>
+  </form>
+</div>
+</div>
+{% endblock %}
