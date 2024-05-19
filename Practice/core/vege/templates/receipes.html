@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+
+<h1>User name: {{request.user.username}}</h1>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label>Receipe Name:</label><br>
+    <input name="receipe_name" required type="text"><br>
+    <label>Receipe Description:</label><br>
+    <textarea name="receipe_description" required></textarea><br>
+    <label>Receipe Image:</label><br>
+    <input name="receipe_image" required type="file"><br>
+    <button type="submit">Submit</button>
+  </form>
+
+  <form>
+    <label>Search:</label><br>
+    <input name="search" type="text"><br>
+    <button type="submit">Submit</button>
+  </form>
+
+  <table border="1 solid black">
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Image</th>
+      <th>Action</th>
+    </tr>
+    {% for data in datas %}
+    <tr>
+        <td>{{forloop.counter}}</td>
+      <td>{{data.receipe_name}}</td>
+      <td>{{data.receipe_description}}</td>
+      <td><img src="{{data.receipe_image.url}}" alt="" width="50px"></td>
+      <td><a href="{% url 'delete' data.id %}"><button>Delete</button></a>
+        <a href="{% url 'update' data.id %}"><button>Update</button>
+    </td>
+    </tr>
+    {% endfor %}
+  </table>
+{% endblock %}
+
+
+

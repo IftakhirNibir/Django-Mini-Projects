@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %} Learning template engine {% endblock %}</title>
+
+{% block content %}
+    <h1>This is our website and homepage</h1>
+    <p>Here we got data from backend</p>
+    <p>{{person}}</p>
+
+    <table border="5 solid black">
+        <tr>
+            <th>Serial</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Can vote</th>
+        </tr>
+        {% for p in person %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{p.name}}</td>
+            <td>{{p.age}}</td>
+            {% if p.age >= 18 %}
+            <td>😃 yea</td>
+            {% else %}
+            <td>😪 noo</td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h3>The text: {{text|truncatechars:19}}</h3>
+
+    {% if "mango" not in fruits %}
+    <p style="color: green;">Mangoes are avaliable</p>
+    {% else %}
+    <p style="color: brown;">Not avaliable</p>
+    {% endif %}
+
+    <h1>{{value|default:"nothing"}}</h1>
+
+    {% for f in fruits %} 
+    <p>{{f|upper}}</p>
+    {% endfor %}
+
+{% endblock %}
+
+

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Receipes{% endblock %}
+
+{% block content %}
+<h1>Update form</h1>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label>Receipe Name:</label><br>
+    <input name="receipe_name"  value="{{data.receipe_name}}" required type="text"><br>
+    <label>Receipe Description:</label><br>
+    <textarea name="receipe_description" required>{{data.receipe_description}}</textarea><br>
+    <label>Previous Image</label><br>
+    <img src="{{data.receipe_image.url}}" alt="" width="50px"><br>
+    <label>Receipe Image:</label><br>
+    <input name="receipe_image" type="file"><br>
+    <button type="submit">Submit</button>
+  </form>
+{% endblock %}
+
+
+
